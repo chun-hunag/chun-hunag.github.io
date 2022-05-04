@@ -14,7 +14,7 @@ timezone: '' # time zone, the default value is the same as your OS time zone
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://jam-boxes.com # The URL of your website
-permalink: :category/:post_title # your article's url format
+permalink: :post_title/ # your article's url format
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
