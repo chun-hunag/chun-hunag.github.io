@@ -3,18 +3,18 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Jam's Box
+title: Jam's Box # website title
 subtitle: 'Leaning Note'
-description: 'Share tech notes and investment experience'
-keywords:
-author: jam huang
-language: en
-timezone: ''
+description: 'Share tech notes and investment experience'  # website description
+keywords: code, programming, php, golang  # The keywords of your website. Supports multiple values.
+author: jam huang  # author name
+language: en # language family
+timezone: '' # time zone, the default value is the same as your OS time zone
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://chun-hunag.github.io
-permalink: :title/
+url: https://jam-boxes.com # The URL of your website
+permalink: :post_title/ # your article's url format
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
