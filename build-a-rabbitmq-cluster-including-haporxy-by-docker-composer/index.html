@@ -20,31 +20,40 @@
     var CONFIG = {"hostname":"jam-boxes.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Share tech notes and investment experience">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Jam&#39;s Box">
-<meta property="og:url" content="https://jam-boxes.com/index.html">
+  <meta name="description" content="Build a RabbitMQ cluster including HAPorxy by docker-composer This article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Build a RabbitMQ cluster including HAPorxy by docker-composer">
+<meta property="og:url" content="https://jam-boxes.com/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/index.html">
 <meta property="og:site_name" content="Jam&#39;s Box">
-<meta property="og:description" content="Share tech notes and investment experience">
+<meta property="og:description" content="Build a RabbitMQ cluster including HAPorxy by docker-composer This article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image.png">
+<meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image%201.png">
+<meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image%202.png">
+<meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image%203.png">
+<meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image%204.png">
+<meta property="article:published_time" content="2022-05-15T02:38:57.000Z">
+<meta property="article:modified_time" content="2022-05-14T18:54:09.108Z">
 <meta property="article:author" content="jam huang">
-<meta property="article:tag" content="code, programming, php, golang">
+<meta property="article:tag" content="RabbitMQ">
+<meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image.png">
 
-<link rel="canonical" href="https://jam-boxes.com/">
+<link rel="canonical" href="https://jam-boxes.com/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Jam's Box</title>
+  <title>Build a RabbitMQ cluster including HAPorxy by docker-composer | Jam's Box</title>
   
 
 
@@ -150,9 +159,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -168,10 +178,9 @@
       <meta itemprop="name" content="Jam's Box">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/" class="post-title-link" itemprop="url">Build a RabbitMQ cluster including HAPorxy by docker-composer</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Build a RabbitMQ cluster including HAPorxy by docker-composer
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -201,7 +210,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer"><a href="#Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer" class="headerlink" title="Build a RabbitMQ cluster including HAPorxy by docker-composer"></a>Build a RabbitMQ cluster including HAPorxy by docker-composer</h1><hr>
+        <h1 id="Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer"><a href="#Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer" class="headerlink" title="Build a RabbitMQ cluster including HAPorxy by docker-composer"></a>Build a RabbitMQ cluster including HAPorxy by docker-composer</h1><hr>
 <p>This article is composed of this part:</p>
 <ul>
 <li>Why do we need a RabbitMQ cluster?</li>
@@ -372,184 +381,34 @@
 <li><a target="_blank" rel="noopener" href="https://blog.yowko.com/docker-compose-rabbitmq-cluster/">https://blog.yowko.com/docker-compose-rabbitmq-cluster/</a></li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://jam-boxes.com/how-to-build-blog-by-hexo-with-theme-%E2%80%9Cnext/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Tombili_mini.jpg">
-      <meta itemprop="name" content="jam huang">
-      <meta itemprop="description" content="Share tech notes and investment experience">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jam's Box">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/how-to-build-blog-by-hexo-with-theme-%E2%80%9Cnext/" class="post-title-link" itemprop="url">How to build blog by hexo with theme “next"</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-02 22:12:57" itemprop="dateCreated datePublished" datetime="2022-05-02T22:12:57+00:00">2022-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-04 13:22:55" itemprop="dateModified" datetime="2022-05-04T13:22:55+00:00">2022-05-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="How-to-build-blog-by-hexo-with-theme-“next”"><a href="#How-to-build-blog-by-hexo-with-theme-“next”" class="headerlink" title="How to build blog by hexo with theme “next”."></a>How to build blog by hexo with theme “next”.</h1><hr>
-<p>This article will show how to build a blog by hexo and host on Github page.</p>
-<h2 id="Prerequisite"><a href="#Prerequisite" class="headerlink" title="Prerequisite"></a>Prerequisite</h2><hr>
-<ul>
-<li>A GitHub account</li>
-<li>Node.js runtime environment</li>
-<li>Git</li>
-</ul>
-<h2 id="Create-a-Repository-with-user-name-github-io"><a href="#Create-a-Repository-with-user-name-github-io" class="headerlink" title="Create a Repository with {user_name}.github.io"></a>Create a Repository with <code>&#123;user_name&#125;.github.io</code></h2><hr>
-<ol>
-<li><p>Create Repository</p>
-<p> <code>&#123;user_name&#125;</code> must be the same as your github’s username.</p>
-<p> <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled.png" alt="Untitled"></p>
-</li>
-<li><p>Clone your repository to local.</p>
-<p> <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%201.png" alt="Untitled"></p>
-</li>
-<li><p>Execute command locally:</p>
-<p> <code>$ git clone &#123;what you just copy&#125;</code></p>
-<p> Example:  <code>$ git clone  https://github.com/&#123;user-name&#125;/&#123;user-name&#125;.github.io.git</code></p>
-</li>
-</ol>
-<h2 id="Install-hexo-by-npm-amp-Initialize-the-project"><a href="#Install-hexo-by-npm-amp-Initialize-the-project" class="headerlink" title="Install hexo by npm &amp; Initialize the project"></a>Install hexo by npm &amp; Initialize the project</h2><hr>
-<ul>
-<li><p><code>$ npm install -g hexo-cli</code></p>
-</li>
-<li><p><code>$ cd &#123;your repository local directory&#125;</code></p>
-</li>
-<li><p><code>$ mkdir src</code></p>
-</li>
-<li><p><code>$ cd src</code></p>
-</li>
-<li><p><code>hexo init</code></p>
-<p>  You should see:</p>
-  <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">INFO</span>  <span class="title class_">Cloning</span> hexo-starter <span class="attr">https</span>:<span class="comment">//github.com/hexojs/hexo-starter.git</span></span><br><span class="line"><span class="variable constant_">INFO</span>  <span class="title class_">Install</span> dependencies</span><br><span class="line">warning hexo-renderer-stylus &gt; stylus &gt; css-parse &gt; css &gt; source-map-resolve@<span class="number">0.5</span><span class="number">.3</span>: <span class="title class_">See</span> <span class="attr">https</span>:<span class="comment">//github.com/lydell/source-map-resolve#deprecated</span></span><br><span class="line">warning hexo-renderer-stylus &gt; stylus &gt; css-parse &gt; css &gt; urix@<span class="number">0.1</span><span class="number">.0</span>: <span class="title class_">Please</span> see <span class="attr">https</span>:<span class="comment">//github.com/lydell/urix#deprecated</span></span><br><span class="line">warning hexo-renderer-stylus &gt; stylus &gt; css-parse &gt; css &gt; source-map-resolve &gt; urix@<span class="number">0.1</span><span class="number">.0</span>: <span class="title class_">Please</span> see <span class="attr">https</span>:<span class="comment">//github.com/lydell/urix#deprecated</span></span><br><span class="line">warning hexo-renderer-stylus &gt; stylus &gt; css-parse &gt; css &gt; source-map-resolve &gt; resolve-url@<span class="number">0.2</span><span class="number">.1</span>: <span class="attr">https</span>:<span class="comment">//github.com/lydell/resolve-url#deprecated</span></span><br><span class="line">warning hexo-renderer-stylus &gt; stylus &gt; css-parse &gt; css &gt; source-map-resolve &gt; source-map-url@<span class="number">0.4</span><span class="number">.1</span>: <span class="title class_">See</span> <span class="attr">https</span>:<span class="comment">//github.com/lydell/source-map-url#deprecated</span></span><br><span class="line"><span class="variable constant_">INFO</span>  <span class="title class_">Start</span> blogging <span class="keyword">with</span> <span class="title class_">Hexo</span>!</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Directory structure like below:</p>
-<p>  <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%202.png" alt="Untitled"></p>
-</li>
-</ul>
-<h2 id="Config-deployment-setting"><a href="#Config-deployment-setting" class="headerlink" title="Config deployment setting"></a>Config deployment setting</h2><hr>
-<ul>
-<li><p>Modify  <code>src/_config.yml</code></p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs<span class="punctuation">:</span> https<span class="punctuation">:</span><span class="comment">//hexo.io/docs/one-command-deployment</span></span><br><span class="line">deploy<span class="punctuation">:</span></span><br><span class="line">  type<span class="punctuation">:</span> git</span><br><span class="line">  repo<span class="punctuation">:</span> https<span class="punctuation">:</span><span class="comment">//github.com/&#123;user_name&#125;/&#123;user_name&#125;.github.io</span></span><br><span class="line">  branch<span class="punctuation">:</span> gh-pages</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="Download-themes"><a href="#Download-themes" class="headerlink" title="Download themes"></a>Download themes</h2><hr>
-<ul>
-<li><p>URL: <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></p>
-</li>
-<li><p><code>$ cd src/themes</code></p>
-</li>
-<li><p><code>$ git clone https://github.com/theme-next/hexo-theme-next.git</code></p>
-</li>
-<li><p>rename folder to next:</p>
-<p>  <code>$ mv hexo-theme-next/ next</code></p>
-</li>
-</ul>
-<h2 id="Config-themes"><a href="#Config-themes" class="headerlink" title="Config themes"></a>Config themes</h2><hr>
-<ul>
-<li><p>Modify  <code>src/_config.yml</code></p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Exensions</span><br><span class="line">## Plugins<span class="punctuation">:</span> https<span class="punctuation">:</span><span class="comment">//hexo.io/plugins/</span></span><br><span class="line">## Themes<span class="punctuation">:</span> https<span class="punctuation">:</span><span class="comment">//hexo.io/themes/</span></span><br><span class="line">theme<span class="punctuation">:</span> next</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><hr>
-<ul>
-<li><p><code>$ cd src/</code></p>
-</li>
-<li><p><code>$ hexo generate</code></p>
-</li>
-<li><p><code>$ hexo deploy</code></p>
-</li>
-<li><p>Go to your repository page on Github and you should see one more branch show up</p>
-<p>  <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%203.png" alt="Untitled"></p>
-</li>
-<li><p>config page setting</p>
-<ol>
-<li><p>Click Setting</p>
-<p> <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%204.png" alt="Untitled"></p>
-</li>
-<li><p>Click Pages</p>
-<p> <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%205.png" alt="Untitled"></p>
-</li>
-<li><p>Set Soruce branch to gh-pages</p>
-<p> <img src="/../images/001.How-to-build-blog-by-hexo-with-theme-next/Untitled%206.png" alt="Untitled"></p>
-</li>
-</ol>
-</li>
-<li><p>Check your page on url: <code>&lt;username&gt;.github.io</code></p>
-</li>
-</ul>
-<h2 id="Config-Basic-Information-of-Blog"><a href="#Config-Basic-Information-of-Blog" class="headerlink" title="Config Basic Information of Blog"></a>Config Basic Information of Blog</h2><hr>
-<ul>
-<li>Modify  <code>src/_config.yml</code></li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Jam&#x27;s</span> <span class="string">Box</span> <span class="comment"># website title</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;Leaning Note&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;Share tech notes and investment experience&#x27;</span>  <span class="comment"># website description</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="comment"># The keywords of your website. Supports multiple values.</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">jam</span> <span class="string">huang</span>  <span class="comment"># author name</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">en</span> <span class="comment"># language family</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span> <span class="comment"># time zone, the default value is the same as your OS time zone</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Config-Basic-Information"><a href="#Config-Basic-Information" class="headerlink" title="Config Basic Information"></a>Config Basic Information</h2><hr>
-<ul>
-<li>Modify  <code>src/_config.yml</code></li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://jam-boxes.com</span> <span class="comment"># The URL of your website</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:post_title/</span> <span class="comment"># your article&#x27;s url format</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/how-to-build-blog-by-hexo-with-theme-%E2%80%9Cnext/" rel="prev" title="How to build blog by hexo with theme “next"">
+      <i class="fa fa-chevron-left"></i> How to build blog by hexo with theme “next"
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -602,6 +461,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer"><span class="nav-number">1.</span> <span class="nav-text">Build a RabbitMQ cluster including HAPorxy by docker-composer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-do-we-need-a-RabbitMQ-cluster"><span class="nav-number">1.1.</span> <span class="nav-text">Why do we need a RabbitMQ cluster?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-many-ways-we-can-build-RabbitMQ-cluster"><span class="nav-number">1.2.</span> <span class="nav-text">How many ways we can build  RabbitMQ cluster ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Some-things-we-need-to-know-before-starting"><span class="nav-number">1.3.</span> <span class="nav-text">Some things we need to know before starting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-RabbitMQ-cluster-through-rabbitmqctl-manually"><span class="nav-number">1.4.</span> <span class="nav-text">Build RabbitMQ cluster through rabbitmqctl manually</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-three-RabbitMQ-container"><span class="nav-number">1.4.1.</span> <span class="nav-text">Run three RabbitMQ container</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-Management-UI"><span class="nav-number">1.4.2.</span> <span class="nav-text">Check Management UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Get-IP-of-rabbitmq-containers"><span class="nav-number">1.4.3.</span> <span class="nav-text">Get IP of rabbitmq containers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-IP-to-container%E2%80%99s-hosts"><span class="nav-number">1.4.4.</span> <span class="nav-text">Add IP to container’s hosts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ-2-and-3-join-cluster"><span class="nav-number">1.4.5.</span> <span class="nav-text">RabbitMQ 2 and 3 join cluster</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-RabbitMQ-cluster-through-docker-composer"><span class="nav-number">1.5.</span> <span class="nav-text">Build RabbitMQ cluster through docker-composer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#First-let%E2%80%99s-look-at-dockerthe-compose-yml"><span class="nav-number">1.5.1.</span> <span class="nav-text">First, let’s look at  dockerthe -compose.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Second-let%E2%80%99s-look-at-two-types-of-Dockerfile-for-build-RabbitMQ"><span class="nav-number">1.5.2.</span> <span class="nav-text">Second, let’s look at two types of Dockerfile for build RabbitMQ :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Third-two-types-of-start-script-master-sh-http-master-sh-slave-sh"><span class="nav-number">1.5.3.</span> <span class="nav-text">Third, two types of start script: [master.sh](http:&#x2F;&#x2F;master.sh) , slave.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dependence"><span class="nav-number">1.5.4.</span> <span class="nav-text">Dependence</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-HAProxy-as-load-balance"><span class="nav-number">1.6.</span> <span class="nav-text">Add HAProxy as load balance.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dockerfile-for-haproxy"><span class="nav-number">1.6.1.</span> <span class="nav-text">Dockerfile for haproxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#haproxy-cfg"><span class="nav-number">1.6.2.</span> <span class="nav-text">haproxy.cfg</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Completed-docker-compose-yml-and-directory-structure"><span class="nav-number">1.7.</span> <span class="nav-text">Completed docker-compose.yml and directory structure</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Completed-docker-compose-yml"><span class="nav-number">1.7.1.</span> <span class="nav-text">Completed docker-compose.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Directory-Structure"><span class="nav-number">1.7.2.</span> <span class="nav-text">Directory Structure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-by-docker-compose"><span class="nav-number">1.8.</span> <span class="nav-text">Build by docker-compose</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">1.9.</span> <span class="nav-text">Source Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.10.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
