@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jam-boxes.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="003.  Declare Quorum queue with go language Last article we describe how to build a RabbitMQ cluster, and this article we will show that declare quorum queue with go and do some simple test to quorum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Declare Quorum queue with go language">
+<meta property="og:url" content="https://jam-boxes.com/declare-quorum-queue-with-go-language/index.html">
+<meta property="og:site_name" content="Jam&#39;s Box">
+<meta property="og:description" content="003.  Declare Quorum queue with go language Last article we describe how to build a RabbitMQ cluster, and this article we will show that declare quorum queue with go and do some simple test to quorum">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jam-boxes.com/images/003.Declare-Quorum-queue-with-go-language/Untitled.png">
+<meta property="og:image" content="https://jam-boxes.com/images/003.Declare-Quorum-queue-with-go-language/Untitled%201.png">
+<meta property="og:image" content="https://jam-boxes.com/images/003.Declare-Quorum-queue-with-go-language/Untitled%202.png">
+<meta property="og:image" content="https://jam-boxes.com/images/003.Declare-Quorum-queue-with-go-language/Untitled%203.png">
+<meta property="article:published_time" content="2022-05-15T02:38:57.000Z">
+<meta property="article:modified_time" content="2022-05-27T16:07:56.671Z">
+<meta property="article:author" content="jam huang">
+<meta property="article:tag" content="RabbitMQ">
+<meta property="article:tag" content="GoLang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jam-boxes.com/images/003.Declare-Quorum-queue-with-go-language/Untitled.png">
+
+<link rel="canonical" href="https://jam-boxes.com/declare-quorum-queue-with-go-language/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Declare Quorum queue with go language | Jam's Box</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jam's Box</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Leaning Note</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/chun-hunag" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://jam-boxes.com/declare-quorum-queue-with-go-language/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Tombili_mini.jpg">
+      <meta itemprop="name" content="jam huang">
+      <meta itemprop="description" content="Share tech notes and investment experience">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jam's Box">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Declare Quorum queue with go language
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-15 02:38:57" itemprop="dateCreated datePublished" datetime="2022-05-15T02:38:57+00:00">2022-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-27 16:07:56" itemprop="dateModified" datetime="2022-05-27T16:07:56+00:00">2022-05-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="003-Declare-Quorum-queue-with-go-language"><a href="#003-Declare-Quorum-queue-with-go-language" class="headerlink" title="003.  Declare Quorum queue with go language"></a>003.  Declare Quorum queue with go language</h1><hr>
+<p><a href="https://jam-boxes.com/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/">Last article</a> we describe how to build a RabbitMQ cluster, and this article we will show that declare quorum queue with go and do some simple test to quorum queue.</p>
+<h2 id="What-we-need"><a href="#What-we-need" class="headerlink" title="What we need?"></a>What we need?</h2><hr>
+<ul>
+<li>library for RabbitMQ: <code>github.com/streadway/amqp</code></li>
+<li>GoLang</li>
+<li>A RabbitMQ Cluster - You can use way last article described or use other way official website do.</li>
+</ul>
+<h2 id="Initialize-and-connect-to-RabbitMQ"><a href="#Initialize-and-connect-to-RabbitMQ" class="headerlink" title="Initialize and connect to RabbitMQ"></a>Initialize and connect to RabbitMQ</h2><hr>
+<p>First, we write a <code>rabbitMQService</code> package to handle detail of RabbitMQ.</p>
+<ul>
+<li><p>RabbitMQService struct:</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> RabbitMQService <span class="keyword">struct</span> &#123;</span><br><span class="line">	account    <span class="type">string</span></span><br><span class="line">	password   <span class="type">string</span></span><br><span class="line">	host       <span class="type">string</span></span><br><span class="line">	vhost      <span class="type">string</span></span><br><span class="line">	connection *amqp.Connection</span><br><span class="line">	channel    *amqp.Channel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Constructor:</p>
+<p>  Simply hard-code config, but this is only for  demo conveniently.</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewRabbitMQService</span><span class="params">()</span></span> *RabbitMQService &#123;</span><br><span class="line">	<span class="comment">// should be replaced by env config load</span></span><br><span class="line">	account := <span class="string">&quot;guest&quot;</span></span><br><span class="line">	password := <span class="string">&quot;guest&quot;</span></span><br><span class="line">	host := <span class="string">&quot;localhost:5672&quot;</span></span><br><span class="line">	vhost := <span class="string">&quot;/&quot;</span></span><br><span class="line">	rabbitMQService := &amp;RabbitMQService&#123;account: account, password: password, host: host, vhost: vhost&#125;</span><br><span class="line">	rabbitMQService.getConnection()</span><br><span class="line">	rabbitMQService.getChannel()</span><br><span class="line">	rabbitMQService.SetQos(<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">return</span> rabbitMQService</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Connect and open channel</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> getConnection() *amqp.Connection &#123;</span><br><span class="line">	connection, err := amqp.Dial(fmt.Sprintf(<span class="string">&quot;amqp://%s:%s@%s%s&quot;</span>, r.account, r.password, r.host, r.vhost))</span><br><span class="line">	failOnError(err, <span class="string">&quot;Failed to connect to RabbitMQ&quot;</span>)</span><br><span class="line">	r.connection = connection</span><br><span class="line">	<span class="keyword">return</span> r.connection</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> getChannel() *amqp.Channel &#123;</span><br><span class="line">	<span class="keyword">if</span> r.connection == <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">&quot;%s&quot;</span>, <span class="string">&quot;Connection is nil.&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	channel, err := r.connection.Channel()</span><br><span class="line">	failOnError(err, <span class="string">&quot;Failed to open a channel&quot;</span>)</span><br><span class="line">	r.channel = channel</span><br><span class="line">	<span class="keyword">return</span> r.channel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Close connection and  channel</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> Close() &#123;</span><br><span class="line">	<span class="keyword">if</span> r.channel != <span class="literal">nil</span> &#123;</span><br><span class="line">		err := r.channel.Close()</span><br><span class="line">		failOnError(err, <span class="string">&quot;Failed to close channel.&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> r.connection != <span class="literal">nil</span> &#123;</span><br><span class="line">		err2 := r.connection.Close()</span><br><span class="line">		failOnError(err2, <span class="string">&quot;Failed to close connection.&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Declare-Exchange"><a href="#Declare-Exchange" class="headerlink" title="Declare Exchange"></a>Declare Exchange</h2><hr>
+<p>Define a <code>ExchangeType</code> type and constant help we to choose exchange type</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> ExchangeType <span class="type">string</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Direct  ExchangeType = <span class="string">&quot;direct&quot;</span></span><br><span class="line">	Topic   ExchangeType = <span class="string">&quot;topic&quot;</span></span><br><span class="line">	Headers ExchangeType = <span class="string">&quot;headers&quot;</span></span><br><span class="line">	Fanout  ExchangeType = <span class="string">&quot;fanout&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> ExchangeDeclare(name <span class="type">string</span>, exchangeType ExchangeType) &#123;</span><br><span class="line">	err := r.channel.ExchangeDeclare(</span><br><span class="line">		name, <span class="comment">// name</span></span><br><span class="line">		<span class="type">string</span>(exchangeType), <span class="comment">// type</span></span><br><span class="line">		<span class="literal">true</span>, <span class="comment">// durable</span></span><br><span class="line">		<span class="literal">false</span>, <span class="comment">// autoDelete</span></span><br><span class="line">		<span class="literal">false</span>, <span class="comment">// internal</span></span><br><span class="line">		<span class="literal">false</span>, <span class="comment">// noWait</span></span><br><span class="line">		<span class="literal">nil</span>, <span class="comment">// args</span></span><br><span class="line">	)</span><br><span class="line">	failOnError(err, <span class="string">&quot;Failed to declare an exchange&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Declare-Quorum-Queue"><a href="#Declare-Quorum-Queue" class="headerlink" title="Declare Quorum Queue"></a>Declare Quorum Queue</h2><hr>
+<p>In order to specify queue’s type, we need to use <code>amqp.Table</code> and set “<code>x-queue-type&quot; = &quot;quorum&quot;</code> and <code>&quot;x-quorum-initial-group-size&quot; = &quot;5&quot;</code> .</p>
+<ul>
+<li><code>x-queue-type</code> :  set queue’s type. the default value is classic.</li>
+<li><code>x-quorum-initial-group-size</code>:  set this argument to control the number of quorum queue members.</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> QuorumQueueDeclare(name <span class="type">string</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> r.isReady() &#123;</span><br><span class="line">		table := amqp.Table&#123;&#125;</span><br><span class="line">		table[<span class="string">&quot;x-queue-type&quot;</span>] = <span class="string">&quot;quorum&quot;</span></span><br><span class="line">		table[<span class="string">&quot;x-quorum-initial-group-size&quot;</span>] = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">		_, err := r.channel.QueueDeclare(</span><br><span class="line">			name,  <span class="comment">// name</span></span><br><span class="line">			<span class="literal">true</span>,  <span class="comment">// quorum queue most be durable</span></span><br><span class="line">			<span class="literal">false</span>, <span class="comment">// delete when unused</span></span><br><span class="line">			<span class="literal">false</span>, <span class="comment">// exclusive</span></span><br><span class="line">			<span class="literal">false</span>, <span class="comment">// no-wait</span></span><br><span class="line">			table, <span class="comment">// arguments</span></span><br><span class="line">		)</span><br><span class="line">		failOnError(err, <span class="string">&quot;Failed to declare a queue&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Queue-bind-to-Exchange"><a href="#Queue-bind-to-Exchange" class="headerlink" title="Queue bind to Exchange"></a>Queue bind to Exchange</h2><hr>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> QueueBind(queueName, routingKey, exchangeName <span class="type">string</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> r.isReady() &#123;</span><br><span class="line">		err := r.channel.QueueBind(</span><br><span class="line">			queueName,</span><br><span class="line">			routingKey,</span><br><span class="line">			exchangeName,</span><br><span class="line">			<span class="literal">false</span>,</span><br><span class="line">			<span class="literal">nil</span>,</span><br><span class="line">		)</span><br><span class="line">		failOnError(err, <span class="string">&quot;Failed to QueueBind&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Publish-and-Consume"><a href="#Publish-and-Consume" class="headerlink" title="Publish and Consume"></a>Publish and Consume</h2><hr>
+<ul>
+<li><p>Publish</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> Publish(exchangeName, routineKey, body <span class="type">string</span>) &#123;</span><br><span class="line">	<span class="keyword">if</span> r.isReady() &#123;</span><br><span class="line">		err := r.channel.Publish(</span><br><span class="line">			exchangeName, <span class="comment">// exchange</span></span><br><span class="line">			routineKey,   <span class="comment">// routing key</span></span><br><span class="line">			<span class="literal">false</span>,        <span class="comment">// mandatory</span></span><br><span class="line">			<span class="literal">false</span>,        <span class="comment">// immediate</span></span><br><span class="line">			amqp.Publishing&#123;</span><br><span class="line">				DeliveryMode: amqp.Persistent,</span><br><span class="line">				ContentType:  <span class="string">&quot;text/plain&quot;</span>,</span><br><span class="line">				Body:         []<span class="type">byte</span>(body),</span><br><span class="line">			&#125;,</span><br><span class="line">		)</span><br><span class="line">		failOnError(err, <span class="string">&quot;Failed to publish a message&quot;</span>)</span><br><span class="line">		log.Printf(<span class="string">&quot; [x] Sent %s&quot;</span>, body)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Consume</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *RabbitMQService)</span></span> Consume(queueName, consumerName <span class="type">string</span>) &lt;-<span class="keyword">chan</span> amqp.Delivery &#123;</span><br><span class="line">	messages, err := r.channel.Consume(</span><br><span class="line">		queueName,    <span class="comment">// name</span></span><br><span class="line">		consumerName, <span class="comment">// consumer tags</span></span><br><span class="line">		<span class="literal">false</span>,        <span class="comment">// auto-ack</span></span><br><span class="line">		<span class="literal">false</span>,        <span class="comment">// exclusive</span></span><br><span class="line">		<span class="literal">false</span>,        <span class="comment">// no-local</span></span><br><span class="line">		<span class="literal">false</span>,        <span class="comment">// no-wait</span></span><br><span class="line">		<span class="literal">nil</span>,          <span class="comment">// args</span></span><br><span class="line">	)</span><br><span class="line">	failOnError(err, <span class="string">&quot;Failed to register a consumer&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> messages</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Server-Side-Code"><a href="#Server-Side-Code" class="headerlink" title="Server Side Code"></a>Server Side Code</h2><hr>
+<ul>
+<li>responsible for  declare queue, exchange and bind it.</li>
+<li>consume queue</li>
+<li>receive message and log message.</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;./helper&quot;</span></span><br><span class="line">	<span class="string">&quot;./rabbitMQService&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	mqService := rabbitMQService.NewRabbitMQService()</span><br><span class="line">	queueName := <span class="string">&quot;quorum-queue&quot;</span></span><br><span class="line">	mqService.QuorumQueueDeclare(queueName)</span><br><span class="line">	mqService.ExchangeDeclare(<span class="string">&quot;quorum.exchange&quot;</span>, rabbitMQService.Fanout)</span><br><span class="line">	mqService.QueueBind(queueName, <span class="string">&quot;quorum.queue&quot;</span>, <span class="string">&quot;quorum.exchange&quot;</span>)</span><br><span class="line">	deliverChan := mqService.Consume(queueName, <span class="string">&quot;client&quot;</span>)</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		mqService.Close()</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	forever := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">bool</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> d := <span class="keyword">range</span> deliverChan &#123;</span><br><span class="line">			message := <span class="type">string</span>(d.Body)</span><br><span class="line">			log.Printf(<span class="string">&quot;%s%s&quot;</span>, <span class="string">&quot;Consume message: &quot;</span>, message)</span><br><span class="line">			err := d.Ack(<span class="literal">false</span>)</span><br><span class="line">			helper.FailOnError(err, <span class="string">&quot;Failed to ack a message&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	log.Printf(<span class="string">&quot; [*] Awaiting Message&quot;</span>)</span><br><span class="line">	&lt;-forever</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Usage:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> run .\server.<span class="keyword">go</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">22</span>:<span class="number">37</span>:<span class="number">35</span>  [*] Awaiting Message</span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span> Consume message: <span class="number">0</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span> Consume message: <span class="number">1</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span> Consume message: <span class="number">2</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span> Consume message: <span class="number">3</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span> Consume message: <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Client-Side-Code"><a href="#Client-Side-Code" class="headerlink" title="Client Side Code"></a>Client Side Code</h2><hr>
+<ul>
+<li>Publish message</li>
+<li>Take in an argument to decide  how many messages were published</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;./helper&quot;</span></span><br><span class="line">	<span class="string">&quot;./rabbitMQService&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">	<span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	n := getArgs(os.Args)</span><br><span class="line">	mqService := rabbitMQService.NewRabbitMQService()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">		mqService.Publish(<span class="string">&quot;quorum.exchange&quot;</span>, <span class="string">&quot;quorum.queue&quot;</span>, strconv.Itoa(i))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getArgs</span><span class="params">(args []<span class="type">string</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> s <span class="type">string</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">len</span>(args) &lt; <span class="number">2</span>) || os.Args[<span class="number">1</span>] == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		helper.FailOnError(<span class="literal">nil</span>, <span class="string">&quot;wrong or absent Args&quot;</span>)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		s = args[<span class="number">1</span>]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	n, err := strconv.Atoi(s)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		helper.FailOnError(err, <span class="string">&quot;Args not integer&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Usage:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">go</span> run .\client.<span class="keyword">go</span> <span class="number">5</span> </span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span>  [x] Sent <span class="number">0</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span>  [x] Sent <span class="number">1</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span>  [x] Sent <span class="number">2</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span>  [x] Sent <span class="number">3</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">14</span>:<span class="number">52</span>  [x] Sent <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Inspect-Quorum-Queue-On-RabbitMQ-GUI"><a href="#Inspect-Quorum-Queue-On-RabbitMQ-GUI" class="headerlink" title="Inspect Quorum Queue On RabbitMQ GUI"></a>Inspect Quorum Queue On RabbitMQ GUI</h2><hr>
+<p>After declaring quorum queue on server side, we can see quorum queue displayed on GUI like this:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://localhost:15672/">http://localhost:15672/</a></li>
+</ul>
+<p><img src="/../images/003.Declare-Quorum-queue-with-go-language/Untitled.png" alt="Untitled"></p>
+<ul>
+<li>The <code>+4</code> mean that there are <code>1 + 4</code>  node exists quorum-queue</li>
+<li>The extra information tell that the quorum queue at <code>rabbitmq-cluster-02</code>, <code>rabbitmq-cluster-03</code>, <code>rabbitmq-cluster-04</code> , <code>rabbitmq-cluster-05</code> are follower.</li>
+</ul>
+<p>Now, we first stop server side program temporarily, and use client program to  send some message for testing.</p>
+<p>we send 10 message first:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> run .\client.<span class="keyword">go</span> <span class="number">10</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">0</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">1</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">2</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">3</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">4</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">5</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">6</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">7</span></span><br><span class="line"><span class="number">2022</span>/<span class="number">05</span>/<span class="number">27</span> <span class="number">23</span>:<span class="number">30</span>:<span class="number">23</span>  [x] Sent <span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p>There are 10 message on queue:</p>
+<p><img src="/../images/003.Declare-Quorum-queue-with-go-language/Untitled%201.png" alt="Untitled"></p>
+<p>Then we stop the first node of RabbitMQ cluster for testing.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose stop rabbitmq-cluster<span class="number">-01</span></span><br><span class="line">[+] Running <span class="number">1</span>/<span class="number">1</span></span><br><span class="line"> - Container rabbitmq-cluster<span class="number">-01</span>  Stopped</span><br></pre></td></tr></table></figure>
+
+<p>Now first node is down.</p>
+<p><img src="/../images/003.Declare-Quorum-queue-with-go-language/Untitled%202.png" alt="Untitled"></p>
+<p>Then we go to check quorum queue:</p>
+<p><img src="/../images/003.Declare-Quorum-queue-with-go-language/Untitled%203.png" alt="Untitled"></p>
+<p>You can see these message still there and the master node change from <code>rabbitmq-cluster-01</code> to <code>rabbitmq-cluster-05</code> .</p>
+<p>Therefore, when we use quorum queue, we can make sure that The Message Broker  has high availability. </p>
+<p>The Consumer and The Publisher still can work even one of  RabbitMQ node down.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><hr>
+<ul>
+<li><p>The most usage of quorum queue is same as classic queue beside we need to declare queue by setting <code>x-queue-type=quorum</code> .</p>
+</li>
+<li><p>The quorum queue with RabbitMQ cluster can provide high availability to your Message Broker System.</p>
+</li>
+<li><p>Another queue was used  to be used on RabbitMQ cluster is  Mirrored Queues.</p>
+<p>  Since the official website say  “**Quorum queues should be considered the default option for a replicated queue type.**”,  </p>
+<p>  we don’t use it unless you have own reasons.</p>
+</li>
+</ul>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><hr>
+<ul>
+<li>RabbitMQ sample code: <a target="_blank" rel="noopener" href="https://github.com/chun-hunag/rabbitmq-sample/tree/main/golang/QuorumQueue">https://github.com/chun-hunag/rabbitmq-sample/tree/main/golang/QuorumQueue</a></li>
+<li>environment: <a target="_blank" rel="noopener" href="https://github.com/chun-hunag/rabbitmq-sample/tree/main/rabbitmq-cluster-env">https://github.com/chun-hunag/rabbitmq-sample/tree/main/rabbitmq-cluster-env</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+              <a href="/tags/GoLang/" rel="tag"># GoLang</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/how-to-build-blog-by-hexo-with-theme-%E2%80%9Cnext/" rel="prev" title="How to build blog by hexo with theme “next"">
+      <i class="fa fa-chevron-left"></i> How to build blog by hexo with theme “next"
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/" rel="next" title="Build a RabbitMQ cluster including HAPorxy by docker-composer">
+      Build a RabbitMQ cluster including HAPorxy by docker-composer <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#003-Declare-Quorum-queue-with-go-language"><span class="nav-number">1.</span> <span class="nav-text">003.  Declare Quorum queue with go language</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-we-need"><span class="nav-number">1.1.</span> <span class="nav-text">What we need?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initialize-and-connect-to-RabbitMQ"><span class="nav-number">1.2.</span> <span class="nav-text">Initialize and connect to RabbitMQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Declare-Exchange"><span class="nav-number">1.3.</span> <span class="nav-text">Declare Exchange</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Declare-Quorum-Queue"><span class="nav-number">1.4.</span> <span class="nav-text">Declare Quorum Queue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Queue-bind-to-Exchange"><span class="nav-number">1.5.</span> <span class="nav-text">Queue bind to Exchange</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Publish-and-Consume"><span class="nav-number">1.6.</span> <span class="nav-text">Publish and Consume</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-Side-Code"><span class="nav-number">1.7.</span> <span class="nav-text">Server Side Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-Side-Code"><span class="nav-number">1.8.</span> <span class="nav-text">Client Side Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inspect-Quorum-Queue-On-RabbitMQ-GUI"><span class="nav-number">1.9.</span> <span class="nav-text">Inspect Quorum Queue On RabbitMQ GUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.10.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">1.11.</span> <span class="nav-text">Source Code</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jam huang"
+      src="/images/Tombili_mini.jpg">
+  <p class="site-author-name" itemprop="name">jam huang</p>
+  <div class="site-description" itemprop="description">Share tech notes and investment experience</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chun-hunag" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chun-hunag" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hgfrttlk@gmail.com" title="E-Mail → mailto:hgfrttlk@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/%E4%BF%8A%E7%91%9D-%E9%BB%83-554b02120" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;%E4%BF%8A%E7%91%9D-%E9%BB%83-554b02120" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fab fa-connectdevelop"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jam huang</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>
