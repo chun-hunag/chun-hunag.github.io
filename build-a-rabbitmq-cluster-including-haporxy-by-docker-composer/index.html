@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"jam-boxes.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"disqus","active":true,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Build a RabbitMQ cluster including HAPorxy by docker-composer This article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is">
+  <meta name="description" content="Build a RabbitMQ cluster including HAPorxy by docker-composerThis article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Build a RabbitMQ cluster including HAPorxy by docker-composer">
 <meta property="og:url" content="https://jam-boxes.com/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/index.html">
 <meta property="og:site_name" content="Jam&#39;s Box">
-<meta property="og:description" content="Build a RabbitMQ cluster including HAPorxy by docker-composer This article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is">
+<meta property="og:description" content="Build a RabbitMQ cluster including HAPorxy by docker-composerThis article is composed of this part:  Why do we need a RabbitMQ cluster? How many ways we can build a RabbitMQ cluster and which way is t">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image.png">
 <meta property="og:image" content="https://jam-boxes.com/images/002.Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-compose/002-image%201.png">
@@ -224,8 +224,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer"><a href="#Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer" class="headerlink" title="Build a RabbitMQ cluster including HAPorxy by docker-composer"></a>Build a RabbitMQ cluster including HAPorxy by docker-composer</h1><hr>
-<p>This article is composed of this part:</p>
+        <h1 id="Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer"><a href="#Build-a-RabbitMQ-cluster-including-HAPorxy-by-docker-composer" class="headerlink" title="Build a RabbitMQ cluster including HAPorxy by docker-composer"></a>Build a RabbitMQ cluster including HAPorxy by docker-composer</h1><p>This article is composed of this part:</p>
 <ul>
 <li>Why do we need a RabbitMQ cluster?</li>
 <li>How many ways we can build a RabbitMQ cluster and which way is this article used?</li>
@@ -241,6 +240,8 @@
 <p>Make sure that Producer and Consumer can still work even if one of a node in the cluster failed.</p>
 <p>The cluster provides higher stability and also sacrifices part of the performance. </p>
 <p>Because nodes in the clusters have to sync messages to each other, this means that the more nodes exist in the cluster, the more time will be costed on syncing messages to each other.</p>
+<span id="more"></span>
+
 <h2 id="How-many-ways-we-can-build-RabbitMQ-cluster"><a href="#How-many-ways-we-can-build-RabbitMQ-cluster" class="headerlink" title="How many ways we can build  RabbitMQ cluster ?"></a>How many ways we can build  RabbitMQ cluster ?</h2><hr>
 <p>According to rabbitmq’s official website, there are several ways to form a cluster:</p>
 <ul>
