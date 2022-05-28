@@ -313,10 +313,6 @@
 <li>Completed <code>docker-compose.yml</code> and directory structure</li>
 <li>Source code</li>
 </ul>
-<h2 id="Why-do-we-need-a-RabbitMQ-cluster"><a href="#Why-do-we-need-a-RabbitMQ-cluster" class="headerlink" title="Why do we need a RabbitMQ cluster?"></a>Why do we need a RabbitMQ cluster?</h2><hr>
-<p>Make sure that Producer and Consumer can still work even if one of a node in the cluster failed.</p>
-<p>The cluster provides higher stability and also sacrifices part of the performance. </p>
-<p>Because nodes in the clusters have to sync messages to each other, this means that the more nodes exist in the cluster, the more time will be costed on syncing messages to each other.</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/build-a-rabbitmq-cluster-including-haporxy-by-docker-composer/#more" rel="contents">
