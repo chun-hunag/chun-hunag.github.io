@@ -105,3 +105,19 @@ deploy:
   type: git
   repo: https://github.com/chun-hunag/chun-hunag.github.io
   branch: gh-pages
+
+# Search
+algolia:
+  applicationID: '8UET5Z50SN'
+  apiKey: 'f737dd0119a4693f4f4e50356f8288aa'
+  indexName: 'jam-boxes.com'
+  chunkSize: 5000
+  fields:
+    - content:strip:truncate,0,500
+    - excerpt:strip
+    - gallery
+    - permalink
+    - photos
+    - slug
+    - tags
+    - title

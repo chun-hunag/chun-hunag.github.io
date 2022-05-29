@@ -7,4 +7,3 @@ set HEXO_ALGOLIA_INDEXING_KEY=$HEXO_ALGOLIA_INDEXING_KEY
 hexo clean
 hexo generate
 hexo algolia
-hexo deploy
