@@ -6,5 +6,5 @@ https://jam-boxes.com/categories/index.html
 https://jam-boxes.com/
 https://jam-boxes.com/tags/RabbitMQ/
 https://jam-boxes.com/tags/Docker/
-https://jam-boxes.com/tags/GoLang/
 https://jam-boxes.com/tags/blog/
+https://jam-boxes.com/tags/GoLang/
