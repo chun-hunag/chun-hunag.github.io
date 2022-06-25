@@ -2,9 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://jam-boxes.com/googled1e478cf506b84e6.html</loc>
+    <loc>https://jam-boxes.com/mysql-explain-analysis/</loc>
     
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-25</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -58,36 +58,50 @@
 
   <url>
     <loc>https://jam-boxes.com/</loc>
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://jam-boxes.com/tags/blog/</loc>
-    <lastmod>2022-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://jam-boxes.com/tags/RabbitMQ/</loc>
-    <lastmod>2022-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://jam-boxes.com/tags/GoLang/</loc>
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://jam-boxes.com/tags/Docker/</loc>
-    <lastmod>2022-05-30</lastmod>
+    <lastmod>2022-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jam-boxes.com/tags/blog/</loc>
+    <lastmod>2022-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jam-boxes.com/tags/GoLang/</loc>
+    <lastmod>2022-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jam-boxes.com/tags/Database/</loc>
+    <lastmod>2022-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jam-boxes.com/tags/MySQL/</loc>
+    <lastmod>2022-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
